@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Stock-Price/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/Stock-Price/static/js/main.1ee2e02d.chunk.js",
+    "main.js.map": "/Stock-Price/static/js/main.1ee2e02d.chunk.js.map",
+    "runtime-main.js": "/Stock-Price/static/js/runtime-main.d09d9e37.js",
+    "runtime-main.js.map": "/Stock-Price/static/js/runtime-main.d09d9e37.js.map",
+    "static/css/2.8dbe6964.chunk.css": "/Stock-Price/static/css/2.8dbe6964.chunk.css",
+    "static/js/2.7e0f2672.chunk.js": "/Stock-Price/static/js/2.7e0f2672.chunk.js",
+    "static/js/2.7e0f2672.chunk.js.map": "/Stock-Price/static/js/2.7e0f2672.chunk.js.map",
+    "index.html": "/Stock-Price/index.html",
+    "precache-manifest.a8a8d632b14122aafb52e2911783817a.js": "/Stock-Price/precache-manifest.a8a8d632b14122aafb52e2911783817a.js",
+    "service-worker.js": "/Stock-Price/service-worker.js",
+    "static/css/2.8dbe6964.chunk.css.map": "/Stock-Price/static/css/2.8dbe6964.chunk.css.map",
+    "static/css/main.5ecd60fb.chunk.css.map": "/Stock-Price/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.7e0f2672.chunk.js.LICENSE.txt": "/Stock-Price/static/js/2.7e0f2672.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d09d9e37.js",
+    "static/css/2.8dbe6964.chunk.css",
+    "static/js/2.7e0f2672.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.1ee2e02d.chunk.js"
+  ]
+}
