@@ -37,7 +37,7 @@ export class Chart extends React.Component<Props, State> {
         return (
             <styled.ChartWrapper>
                 <styled.Symbol>
-                    {symbol}
+                    {chartTimeSeries.length ? symbol : 'Search a Symbol'}
                 </styled.Symbol>
                 {
                     <LineChart width={1500} height={450} data={chartTimeSeries.length ? chartTimeSeries : pricesMock}>
