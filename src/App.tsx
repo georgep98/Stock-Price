@@ -2,7 +2,6 @@ import { EasyTimeSeries } from './utils/utils';
 import { Button } from '../src/components/button/button';
 import { Chart } from '../src/components/chart/chart';
 import { StyledInput } from '../src/components/input/input';
-import { time } from 'console';
 import React from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -42,7 +41,7 @@ export class App extends React.Component<Props, State> {
         <StyledInput onChange={(e: any) => this.handleInputChange(e)} />
         <Button onClick={() => this.callVantageApi()} text={'Fetch Stock Values'}/>
         <Chart 
-          symbol={!!inputValue ? inputValue : 'DEFAULT MOCKS'}
+          symbol={!!inputValue ? inputValue : 'Symbol'}
           chartTimeSeries={filteredSeries.length ? filteredSeries: chartTimeSeries} />
 
         <styled.Calendars>
@@ -60,7 +59,7 @@ export class App extends React.Component<Props, State> {
             value={endDate}
           />
 
-          <Button onClick={() => this.sliceDate()} text={'Slices Dates'}/>
+          <Button onClick={() => this.sliceDate()} text={'Slice Dates'}/>
 
         </styled.Calendars>
 
@@ -116,6 +115,7 @@ export class App extends React.Component<Props, State> {
         (data) => {
           if (data['Error Message']) {
             console.warn('<!> Error')
+            return;
           }
           this.setState({
             chartTimeSeries: utils.convertTimeSeries(data),
