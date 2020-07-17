@@ -96,7 +96,6 @@ export class App extends React.Component<Props, State> {
 
 
     copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) >= startDate && new Date(timeSeries.date) <= endDate)
-    console.log('+++ copyChartTimeSeries', copyChartTimeSeries);
 
     this.setState({
       filteredSeries: copyChartTimeSeries
