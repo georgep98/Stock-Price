@@ -29,20 +29,20 @@ export class App extends React.Component<Props, State> {
       chartTimeSeries: [],
       startDate: new Date(),
       endDate: new Date(),
-      filteredSeries: [],
+      filteredSeries: null as any,
     }
   }
 
   public render() {
-    const { chartTimeSeries, filteredSeries, startDate, endDate,inputValue } = this.state;
+    const { chartTimeSeries, filteredSeries, startDate, endDate, inputValue } = this.state;
 
     return (
       <styled.App>
         <StyledInput onChange={(e: any) => this.handleInputChange(e)} />
-        <Button onClick={() => this.callVantageApi()} text={'Fetch Stock Values'}/>
-        <Chart 
+        <Button onClick={() => this.callVantageApi()} text={'Fetch Stock Values'} />
+        <Chart
           symbol={!!inputValue ? inputValue : 'Symbol'}
-          chartTimeSeries={filteredSeries.length ? filteredSeries: chartTimeSeries} />
+          chartTimeSeries={filteredSeries !== null ? filteredSeries : chartTimeSeries} />
 
         <styled.Calendars>
           <Calendar
@@ -59,7 +59,7 @@ export class App extends React.Component<Props, State> {
             value={endDate}
           />
 
-          <Button onClick={() => this.sliceDate()} text={'Slice Dates'}/>
+          <Button onClick={() => this.sliceDate()} text={'Slice Dates'} />
 
         </styled.Calendars>
 
@@ -67,11 +67,36 @@ export class App extends React.Component<Props, State> {
     )
   }
 
+  public componentDidMount() {
+    let request = utils.createAlphaVantageRequestInfo('amzn');
+
+    fetch(request)
+      .then(
+        (res) => {
+          return res.json();
+        }
+      )
+      .then(
+        (data) => {
+          if (data['Error Message']) {
+            console.warn('<!> Error')
+            return;
+          }
+          this.setState({
+            chartTimeSeries: utils.convertTimeSeries(data),
+          });
+        }
+
+      )
+  }
+
   private sliceDate() {
-    const { chartTimeSeries, startDate, endDate } =this.state;
+    const { chartTimeSeries, startDate, endDate } = this.state;
     let copyChartTimeSeries = chartTimeSeries;
 
-    copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) > startDate && new Date(timeSeries.date) < endDate )
+
+    copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) >= startDate && new Date(timeSeries.date) <= endDate)
+    console.log('+++ copyChartTimeSeries', copyChartTimeSeries);
 
     this.setState({
       filteredSeries: copyChartTimeSeries
@@ -98,7 +123,7 @@ export class App extends React.Component<Props, State> {
 
   private callVantageApi() {
     this.setState({
-      filteredSeries: [],
+      filteredSeries: null as any,
     })
     const { inputValue } = this.state;
     let stockSymbol = inputValue;

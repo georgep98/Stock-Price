@@ -32,7 +32,7 @@ export class Chart extends React.Component<Props, State> {
 
     public render() {
         const { chartTimeSeries, symbol } = this.props;
-        let avg = computeAveragePrice(chartTimeSeries.length ? this.props.chartTimeSeries : pricesMock);
+        let avg = computeAveragePrice(chartTimeSeries);
 
         return (
             <styled.ChartWrapper>
@@ -40,7 +40,7 @@ export class Chart extends React.Component<Props, State> {
                     {chartTimeSeries.length ? symbol : 'Search a Symbol'}
                 </styled.Symbol>
                 {
-                    <LineChart width={1500} height={450} data={chartTimeSeries.length ? chartTimeSeries : pricesMock}>
+                    <LineChart width={1500} height={450} data={chartTimeSeries}>
                         <XAxis dataKey='date' />
                         <YAxis dataKey='price' />
                         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
