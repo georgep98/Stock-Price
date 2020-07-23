@@ -16,7 +16,7 @@ export const convertTimeSeries = (data: any): EasyTimeSeries[] => {
 
         result.push(item);
     });
-
+    
     return result.reverse();
 };
 

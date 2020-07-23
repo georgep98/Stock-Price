@@ -1,4 +1,3 @@
-import { pricesMock } from './chart.utils';
 import { computeAveragePrice, EasyTimeSeries } from '../../utils/utils';
 import * as React from 'react';
 import {
@@ -37,11 +36,11 @@ export class Chart extends React.Component<Props, State> {
         return (
             <styled.ChartWrapper>
                 <styled.Symbol>
-                    {chartTimeSeries.length ? symbol : 'Search a Symbol'}
+                    {chartTimeSeries.length ? symbol : 'No Records!'}
                 </styled.Symbol>
                 {
-                    <LineChart width={1500} height={450} data={chartTimeSeries}>
-                        <XAxis dataKey='date' />
+                    <LineChart width={1700} height={450} data={chartTimeSeries}>
+                        <XAxis dataKey='date' interval='preserveStartEnd' domain={['auto',new Date().toString()]}/>
                         <YAxis dataKey='price' />
                         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                         <Line type="monotone" dataKey="price" stroke="blue" />

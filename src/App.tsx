@@ -13,7 +13,6 @@ interface Props { }
 
 interface State {
   inputValue: string;
-  chartTimeSeries: EasyTimeSeries[];
   startDate: Date;
   endDate: Date;
   filteredSeries: EasyTimeSeries[];
@@ -26,34 +25,33 @@ export class App extends React.Component<Props, State> {
 
     this.state = {
       inputValue: '',
-      chartTimeSeries: [],
-      startDate: new Date(),
+      startDate: new Date("1999-12-31"),
       endDate: new Date(),
-      filteredSeries: null as any,
+      filteredSeries: [],
     }
   }
 
   public render() {
-    const { chartTimeSeries, filteredSeries, startDate, endDate, inputValue } = this.state;
+    const { filteredSeries, startDate, endDate, inputValue } = this.state;
 
     return (
       <styled.App>
         <StyledInput onChange={(e: any) => this.handleInputChange(e)} />
         <Button onClick={() => this.callVantageApi()} text={'Fetch Stock Values'} />
         <Chart
-          symbol={!!inputValue ? inputValue : 'Symbol'}
-          chartTimeSeries={filteredSeries !== null ? filteredSeries : chartTimeSeries} />
+          symbol={!!inputValue ? inputValue : 'Amzn'}
+          chartTimeSeries={filteredSeries} />
 
         <styled.Calendars>
           <Calendar
-            minDate={new Date("2000-01-01")}
+            minDate={new Date("1999-12-31")}
             maxDate={new Date()}
             onChange={(date) => this.onChangeCalendarStartDate(date)}
             value={startDate}
           />
 
           <Calendar
-            minDate={new Date("2000-01-01")}
+            minDate={new Date("1999-12-31")}
             maxDate={new Date()}
             onChange={(date) => this.onChangeCalendarEndDate(date)}
             value={endDate}
@@ -83,19 +81,22 @@ export class App extends React.Component<Props, State> {
             return;
           }
           this.setState({
-            chartTimeSeries: utils.convertTimeSeries(data),
+            filteredSeries: utils.convertTimeSeries(data),
           });
+          this.sliceDate()
         }
-
+        
       )
   }
 
   private sliceDate() {
-    const { chartTimeSeries, startDate, endDate } = this.state;
-    let copyChartTimeSeries = chartTimeSeries;
+    const { startDate, endDate, filteredSeries } = this.state;
+    let copyChartTimeSeries = filteredSeries;
 
 
     copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) >= startDate && new Date(timeSeries.date) <= endDate)
+    copyChartTimeSeries[0].date = startDate.getDate() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getFullYear()
+    copyChartTimeSeries[copyChartTimeSeries.length - 1].date = endDate.getDate() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getFullYear()
 
     this.setState({
       filteredSeries: copyChartTimeSeries
@@ -121,9 +122,6 @@ export class App extends React.Component<Props, State> {
   }
 
   private callVantageApi() {
-    this.setState({
-      filteredSeries: null as any,
-    })
     const { inputValue } = this.state;
     let stockSymbol = inputValue;
 
@@ -141,9 +139,7 @@ export class App extends React.Component<Props, State> {
             console.warn('<!> Error')
             return;
           }
-          this.setState({
-            chartTimeSeries: utils.convertTimeSeries(data),
-          });
+          this.sliceDate()
         }
 
       )
