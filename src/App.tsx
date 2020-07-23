@@ -92,22 +92,29 @@ export class App extends React.Component<Props, State> {
   }
 
   private sliceDate() {
-    const { startDate, endDate, filteredSeries } = this.state;
+    let { startDate, endDate, filteredSeries } = this.state;
+    let start: any, end: any;
 
-    if(startDate > endDate) {
-      return;
+    if(startDate >= endDate) {
+      start = endDate;
+      end = startDate
+    
+    } else {
+      start = startDate;
+      end = endDate;
     }
 
+
     let copyChartTimeSeries = filteredSeries;
-    copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) >= startDate && new Date(timeSeries.date) <= endDate)
+    copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) >= start && new Date(timeSeries.date) <= end)
 
     let newChartTimes = [
-      { date: startDate.getDate() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getFullYear(),
+      { date: start.getDate() + "-" + (start.getMonth() + 1) + "-" + start.getFullYear(),
         price: copyChartTimeSeries[0].price,
       },
          ...copyChartTimeSeries,
       {
-        date: endDate.getDate() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getFullYear(),
+        date: end.getDate() + "-" + (end.getMonth() + 1) + "-" + end.getFullYear(),
         price: copyChartTimeSeries[copyChartTimeSeries.length - 1].price
       }  
         ]
