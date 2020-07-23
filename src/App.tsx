@@ -16,6 +16,7 @@ interface State {
   startDate: Date;
   endDate: Date;
   filteredSeries: EasyTimeSeries[];
+  symbol: string;
 }
 
 export class App extends React.Component<Props, State> {
@@ -28,6 +29,7 @@ export class App extends React.Component<Props, State> {
       startDate: new Date("1999-12-31"),
       endDate: new Date(),
       filteredSeries: [],
+      symbol: 'AMZN',
     }
   }
 
@@ -91,15 +93,27 @@ export class App extends React.Component<Props, State> {
 
   private sliceDate() {
     const { startDate, endDate, filteredSeries } = this.state;
+
+    if(startDate > endDate) {
+      return;
+    }
+
     let copyChartTimeSeries = filteredSeries;
-
-
     copyChartTimeSeries = copyChartTimeSeries.filter(timeSeries => new Date(timeSeries.date) >= startDate && new Date(timeSeries.date) <= endDate)
-    copyChartTimeSeries[0].date = startDate.getDate() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getFullYear()
-    copyChartTimeSeries[copyChartTimeSeries.length - 1].date = endDate.getDate() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getFullYear()
+
+    let newChartTimes = [
+      { date: startDate.getDate() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getFullYear(),
+        price: copyChartTimeSeries[0].price,
+      },
+         ...copyChartTimeSeries,
+      {
+        date: endDate.getDate() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getFullYear(),
+        price: copyChartTimeSeries[copyChartTimeSeries.length - 1].price
+      }  
+        ]
 
     this.setState({
-      filteredSeries: copyChartTimeSeries
+      filteredSeries: newChartTimes,
     })
   }
 
@@ -117,7 +131,7 @@ export class App extends React.Component<Props, State> {
 
   private handleInputChange(e: any) {
     this.setState({
-      inputValue: e.target.value
+      inputValue: e.target.value,
     })
   }
 
@@ -139,6 +153,9 @@ export class App extends React.Component<Props, State> {
             console.warn('<!> Error')
             return;
           }
+          this.setState({
+            filteredSeries: utils.convertTimeSeries(data),
+          });
           this.sliceDate()
         }
 

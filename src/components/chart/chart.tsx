@@ -32,6 +32,8 @@ export class Chart extends React.Component<Props, State> {
     public render() {
         const { chartTimeSeries, symbol } = this.props;
         let avg = computeAveragePrice(chartTimeSeries);
+    
+        
 
         return (
             <styled.ChartWrapper>
@@ -40,7 +42,7 @@ export class Chart extends React.Component<Props, State> {
                 </styled.Symbol>
                 {
                     <LineChart width={1700} height={450} data={chartTimeSeries}>
-                        <XAxis dataKey='date' interval='preserveStartEnd' domain={['auto',new Date().toString()]}/>
+                        <XAxis dataKey='date' interval='preserveStartEnd' />
                         <YAxis dataKey='price' />
                         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                         <Line type="monotone" dataKey="price" stroke="blue" />
@@ -55,4 +57,3 @@ export class Chart extends React.Component<Props, State> {
         )
     }
 }
-
